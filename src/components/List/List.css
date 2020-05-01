@@ -1,0 +1,18 @@
+.list p{
+    padding: 10px;
+    position: relative;
+}
+.list p span{
+    position: absolute;
+    cursor: pointer;
+}
+.list p input{
+    background-color: transparent;
+    border: 0;
+    color: #000;
+    font-size: 18px;
+}
+
+.list p input:focus{
+    outline: none;
+}
