@@ -1,6 +1,7 @@
 .list p{
     padding: 10px;
     position: relative;
+    text-align: center;
 }
 .list p span{
     position: absolute;
