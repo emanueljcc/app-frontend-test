@@ -40,6 +40,7 @@ const Transition = React.forwardRef(function Transition(props, ref) {
 export default function Modal({ open, setOpen, row, setRow }) {
     const classes = useStyles();
 
+    // setear inputs
     const handleChange = debounce((e) => {
         setRow({
             ...row,

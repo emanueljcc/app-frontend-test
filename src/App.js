@@ -35,6 +35,7 @@ const useStyles = makeStyles({
 function App() {
     const classes = useStyles();
 
+    // estados para las alertas
     const [openAlerts, setOpenAlerts] = useState({ open: false, msg: '', type: '' });
 
     const [state, setState] = useState({
@@ -123,6 +124,7 @@ function App() {
 
     useEffect(() => {
         (async () => {
+            // TODO: getAll API
             const data = await getAll();
 
             setState({
