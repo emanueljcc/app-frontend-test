@@ -2,7 +2,7 @@
 const URL = "https://monoku-tasks.herokuapp.com";
 const TOKEN = "vTDlMks5BaSIpoLMRRtH";
 
-const getAll = async () => {
+export const getAll = async () => {
     try {
 
         const response = await fetch(`${URL}/${TOKEN}/all`);
@@ -13,7 +13,7 @@ const getAll = async () => {
     }
 }
 
-const postItem = async (item) => {
+export const postItem = async (item) => {
     try {
 
         const options = {
@@ -29,7 +29,7 @@ const postItem = async (item) => {
     }
 }
 
-const updateItem = async (data) => {
+export const updateItem = async (data) => {
     try {
 
         const options = {
@@ -48,7 +48,7 @@ const updateItem = async (data) => {
     }
 }
 
-const removeItem = async (id) => {
+export const removeItem = async (id) => {
     try {
 
         const options = {
@@ -61,10 +61,3 @@ const removeItem = async (id) => {
         console.log(error);
     }
 }
-
-module.exports = {
-    getAll,
-    postItem,
-    removeItem,
-    updateItem,
-};
