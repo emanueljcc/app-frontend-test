@@ -8,7 +8,7 @@ const withLoaderTable = (WrappedComponent) => {
     const { rows, reload } = props;
 
     // eslint-disable-next-line react/prop-types
-    return reload && rows.length === 0 ? (
+    return !reload && rows.length === 0 ? (
       <>
         <div  style={{marginTop: 30}}>
           <Skeleton height={50} variant="text" />

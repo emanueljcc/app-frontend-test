@@ -17,8 +17,8 @@ const postItem = async (item) => {
     try {
 
         const options = {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
             body: JSON.stringify(item)
         };
         const saved = await fetch(`${URL}/${TOKEN}/add`, options);
@@ -33,8 +33,8 @@ const updateItem = async (data) => {
     try {
 
         const options = {
-            method: 'PUT',
-            headers: { 'Content-Type': 'application/json' },
+            method: "PUT",
+            headers: { "Content-Type": "application/json" },
             body: JSON.stringify({
                 text: data.text,
                 notes: data.notes,
@@ -51,10 +51,8 @@ const updateItem = async (data) => {
 const removeItem = async (id) => {
     try {
 
-        console.log(id)
-
         const options = {
-            method: 'DELETE',
+            method: "DELETE",
         };
         const deleted = await fetch(`${URL}/${TOKEN}/${id}/delete`, options);
         return await deleted.json();

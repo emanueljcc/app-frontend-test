@@ -1,30 +1,23 @@
-import React, { useEffect } from 'react'
+import React from "react"
 import { makeStyles } from "@material-ui/core/styles";
 import {
     Container,
     Grid,
-    Button,
     Dialog,
-    ListItemText,
-    ListItem,
-    List,
-    Divider,
     AppBar,
     Toolbar,
     Typography,
     TextField,
     Slide,
     IconButton,
-    FormControlLabel,
-    Radio,
-} from '@material-ui/core';
-import CloseIcon from '@material-ui/icons/Close';
-import FiberManualRecordIcon from '@material-ui/icons/FiberManualRecord';
-
+} from "@material-ui/core";
+import CloseIcon from "@material-ui/icons/Close";
+import FiberManualRecordIcon from "@material-ui/icons/FiberManualRecord";
+import debounce from "lodash.debounce";
 
 const useStyles = makeStyles((theme) => ({
     appBar: {
-        position: 'relative',
+        position: "relative",
         backgroundColor: "white",
         color: "#000"
     },
@@ -47,28 +40,19 @@ const Transition = React.forwardRef(function Transition(props, ref) {
 export default function Modal({ open, setOpen, row, setRow, setUpdate }) {
     const classes = useStyles();
 
-    const handleChange = e => {
+    const handleChange = debounce((e) => {
         setRow({
             ...row,
             [e.target.name]: e.target.value,
         });
-    }
+    }, 300);
 
     const handleClose = () => setOpen(false);
-
-
-    useEffect(() => {
-        if (row.text) {
-            console.log(row)
-            setUpdate(row);
-        }
-    }, [row])
-
 
     return (
         <Dialog fullScreen open={open} onClose={handleClose} TransitionComponent={Transition}>
             <AppBar className={classes.appBar}>
-                <Toolbar>
+                <Toolbar style={{ padding: "40px 0 40px 0" }}>
                     <Typography variant="h6" className={classes.title}>
                         {row.text}
                     </Typography>
@@ -90,8 +74,12 @@ export default function Modal({ open, setOpen, row, setRow, setUpdate }) {
                             id="text"
                             style={{ margin: 8, background: "#fff" }}
                             name="text"
-                            value={row.text}
-                            onChange={handleChange}
+                            defaultValue={row.text}
+                            onChange={e => {
+                                e.persist();
+                                return handleChange(e);
+                            }}
+                            placeholder="Ingresar Texto"
                             fullWidth
                             margin="normal"
                             InputLabelProps={{
@@ -104,8 +92,9 @@ export default function Modal({ open, setOpen, row, setRow, setUpdate }) {
                             id="notes"
                             style={{ margin: 8, background: "#fff" }}
                             name="notes"
-                            value={row.notes}
+                            defaultValue={row.notes}
                             onChange={handleChange}
+                            placeholder="Ingresar Notas"
                             fullWidth
                             margin="normal"
                             InputLabelProps={{

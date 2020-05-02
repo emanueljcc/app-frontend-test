@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import { makeStyles } from "@material-ui/core/styles";
 import {
     Table,
@@ -11,7 +11,7 @@ import {
     Radio,
     IconButton,
 } from "@material-ui/core";
-import DeleteIcon from '@material-ui/icons/Delete';
+import DeleteIcon from "@material-ui/icons/Delete";
 import Modal from "../components/Modal";
 import withLoaderTable from "../components/HOC/withLoaderTable";
 
@@ -23,7 +23,7 @@ const useStyles = makeStyles((theme) => ({
         opacity: 0.4,
     },
     appBar: {
-        position: 'relative',
+        position: "relative",
         backgroundColor: "white",
         color: "#000"
     },
@@ -49,9 +49,9 @@ function TableList({ rows, setUpdate, deleteItem, reload, setState, state }) {
     const [open, setOpen] = useState(false);
     const [row, setRow] = useState({
         checked: null,
-        id: '',
-        text: '',
-        notes: '',
+        id: "",
+        text: "",
+        notes: "",
     });
 
     const handleOpenModal = item => {
@@ -63,14 +63,11 @@ function TableList({ rows, setUpdate, deleteItem, reload, setState, state }) {
     }
 
     const updatedItem = (item) => {
-        const itemsUpdated = [
-            ...rows,
-            item
-        ];
+        const itemsUpdated = rows.map((itemOrigin) => {
+            if (item.id === itemOrigin.id) return item;
 
-
-
-
+            return itemOrigin;
+        });
         setRow({
             ...row,
             ...item
@@ -79,28 +76,32 @@ function TableList({ rows, setUpdate, deleteItem, reload, setState, state }) {
         setState({
             ...state,
             items: itemsUpdated
-        })
+        });
+
+        // TODO: call update api
+        setUpdate(item);
     }
 
 
     return (
         <>
-            {rows.map(item => (
-                <TableContainer className={classes.table} component={Paper} key={item.id + (new Date()).getTime()}>
-                    <Table aria-label="simple table">
-                        <TableBody>
-                            <TableRow>
-                                <TableCell component="th" scope="row" style={{ padding: 0, width: "8%" }}>
+            <TableContainer className={classes.table} component={Paper}>
+                <Table aria-label="simple table">
+                    <TableBody key={Math.random()}>
+                        {rows.map((item, key) => (
+                            <TableRow key={item.id + `${key}`}>
+                                <TableCell key={item.id + (new Date()).getTime() + Math.random() + `${key}`} component="th" scope="row"  style={{ padding: 0, width: "8%" }}>
                                     <FormControlLabel value="female" control={<Radio className={classes.radioColor}/>} />
                                 </TableCell>
                                 <TableCell
                                     align="left"
                                     style={{cursor: "pointer", color: "#393943"}}
                                     onClick={() => handleOpenModal(item)}
+                                    key={item.id + (new Date()).getTime()}
                                 >
                                     {item.text ? item.text : " - "}
                                 </TableCell>
-                                <TableCell align="right">
+                                <TableCell align="right" key={`${key}`}>
                                     <IconButton
                                         aria-label="delete"
                                         className={[classes.margin, classes.btnColor].join(" ")}
@@ -110,10 +111,10 @@ function TableList({ rows, setUpdate, deleteItem, reload, setState, state }) {
                                     </IconButton>
                                 </TableCell>
                             </TableRow>
-                        </TableBody>
-                    </Table>
-                </TableContainer>
-            ))}
+                        ))}
+                    </TableBody>
+                </Table>
+            </TableContainer>
             <Modal open={open} setOpen={setOpen} row={row} setRow={updatedItem} setUpdate={setUpdate} />
         </>
     )
