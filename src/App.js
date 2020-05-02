@@ -3,10 +3,10 @@ import { makeStyles } from '@material-ui/core/styles';
 import TextField from '@material-ui/core/TextField';
 import { Button, Grid, Container, Typography } from '@material-ui/core';
 import List from './components/List/List';
+import Widget from "./components/Widget/Widget";
 import { getAll, postItem, removeItem, updateItem } from "./config/Api";
 import './App.css';
 
-import Widget from "./components/Widget/Widget";
 
 const useStyles = makeStyles({
     root: {
@@ -37,18 +37,19 @@ function App() {
     const [state, setState] = useState({
         items : [],
         currentItem: {
-        text: '',
-        key: ''
+            text: '',
+            key: ''
         }
     });
+    const [reload, setReload] = useState(false);
 
     const handleInput = (e) => {
         setState({
-        ...state,
-        currentItem: {
-            text: e.target.value,
-            key: Date.now()
-        }
+            ...state,
+            currentItem: {
+                text: e.target.value,
+                key: Date.now(),
+            }
         });
     }
 
@@ -72,6 +73,7 @@ function App() {
                 }
             });
         }
+        setReload(true);
     }
 
     const deleteItem = (key) => {
@@ -83,32 +85,37 @@ function App() {
         removeItem(key.id);
     }
 
-    const setUpate = (value, id) => {
+    const setUpdate = (data) => {
         const items = state.items;
+
         // eslint-disable-next-line array-callback-return
         items.map(item => {
-            if (item.id === id) {
-                item.text = value;
+            if (item.id === data.id) {
+                item.text = data.value;
             }
         })
         setState({
             ...state,
-            items
+            items,
         });
 
-        updateItem(value, id);
+        // API
+        updateItem(data);
     }
 
     // FIXME: ARREGLAR FIX ACA
     useEffect(() => {
         (async () => {
             const data = await getAll();
+
             setState({
                 ...state,
                 items: data,
             });
+
+            setReload(false);
         })();
-    }, []);
+    }, [reload]);
 
     return (
         <Container maxWidth="sm">
@@ -137,15 +144,11 @@ function App() {
                                     }}
                                     variant="outlined"
                                 />
-
-                                {/* <Button type="submit" variant="outlined" color="primary" style={{ float: "right" }}>
-                                    Añadir Tarea
-                                </Button> */}
                                 <Button
                                     type="submit"
                                     classes={{
-                                        root: classes.root, // class name, e.g. `classes-nesting-root-x`
-                                        label: classes.label, // class name, e.g. `classes-nesting-label-x`
+                                        root: classes.root,
+                                        label: classes.label,
                                     }}
                                 >
                                     Añadir Tarea
@@ -154,7 +157,7 @@ function App() {
                         </header>
                         <br/>
                         <br/>
-                        <List items={state} deleteItem={deleteItem} setUpdate={setUpate}/>
+                        <List rows={state.items} state={state} setState={setState} deleteItem={deleteItem} setUpdate={setUpdate} reload={reload} />
                     </div>
                 </Grid>
             </Grid>

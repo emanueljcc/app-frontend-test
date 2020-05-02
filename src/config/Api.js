@@ -29,16 +29,18 @@ const postItem = async (item) => {
     }
 }
 
-const updateItem = async (value, id) => {
+const updateItem = async (data) => {
     try {
+
         const options = {
             method: 'PUT',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify({
-                text: value
+                text: data.text,
+                notes: data.notes,
             })
         };
-        const updated = await fetch(`${URL}/${TOKEN}/${id}/update`, options);
+        const updated = await fetch(`${URL}/${TOKEN}/${data.id}/update`, options);
         return  updated.json();
 
     } catch (error) {
@@ -49,11 +51,13 @@ const updateItem = async (value, id) => {
 const removeItem = async (id) => {
     try {
 
+        console.log(id)
+
         const options = {
             method: 'DELETE',
         };
         const deleted = await fetch(`${URL}/${TOKEN}/${id}/delete`, options);
-        return  deleted.json();
+        return await deleted.json();
 
     } catch (error) {
         console.log(error);
@@ -64,5 +68,5 @@ module.exports = {
     getAll,
     postItem,
     removeItem,
-    updateItem
+    updateItem,
 };
