@@ -36,6 +36,7 @@ export const updateItem = async (data) => {
             method: "PUT",
             headers: { "Content-Type": "application/json" },
             body: JSON.stringify({
+                checked: data.checked,
                 text: data.text,
                 notes: data.notes,
             })
@@ -61,3 +62,5 @@ export const removeItem = async (id) => {
         console.log(error);
     }
 }
+
+// TODO: remove module.export error deploy heroku

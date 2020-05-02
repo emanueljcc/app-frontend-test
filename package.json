@@ -14,8 +14,8 @@
     "radium": "^0.26.0",
     "react": "^16.13.1",
     "react-animations": "^1.0.0",
+    "react-digital-clock": "^0.1.2",
     "react-dom": "^16.13.1",
-    "react-flip-move": "^3.0.4",
     "react-scripts": "3.4.0",
     "typeface-roboto": "^0.0.75"
   },

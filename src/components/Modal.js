@@ -37,7 +37,7 @@ const Transition = React.forwardRef(function Transition(props, ref) {
     return <Slide direction="up" ref={ref} {...props} />;
 });
 
-export default function Modal({ open, setOpen, row, setRow, setUpdate }) {
+export default function Modal({ open, setOpen, row, setRow }) {
     const classes = useStyles();
 
     const handleChange = debounce((e) => {

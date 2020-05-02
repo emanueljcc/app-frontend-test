@@ -1,11 +1,13 @@
 import React, { useState, useEffect } from "react";
 import { makeStyles } from "@material-ui/core/styles";
-import { Button, Grid, Container, Typography, TextField } from "@material-ui/core";
+import { Grid, Container } from "@material-ui/core";
 import { fadeIn } from 'react-animations'
 import Radium, {StyleRoot} from 'radium';
-import List from "./components/List/List";
-import Widget from "./components/Widget/Widget";
+import List from "./components/List";
+import Widget from "./components/Widget";
 import { getAll, postItem, removeItem, updateItem } from "./config/Api";
+import InputPost from "./components/InputPost";
+import Alerts from "./components/Alerts";
 import "./App.css";
 
 const useStyles = makeStyles({
@@ -32,6 +34,8 @@ const useStyles = makeStyles({
 
 function App() {
     const classes = useStyles();
+
+    const [openAlerts, setOpenAlerts] = useState({ open: false, msg: '', type: '' });
 
     const [state, setState] = useState({
         items : [],
@@ -72,9 +76,21 @@ function App() {
                 }
             });
 
+            setOpenAlerts({
+                open: true,
+                msg: 'Created successfully.',
+                type: 'success',
+            });
+
             // CREATE
             postItem(data);
             setReload(true);
+        } else {
+            setOpenAlerts({
+                open: true,
+                msg: 'Please fill input text.',
+                type: 'warning',
+            });
         }
     }
 
@@ -84,10 +100,23 @@ function App() {
             ...state,
             items: filteredItems
         });
+
+        setOpenAlerts({
+            open: true,
+            msg: 'Deleted successfully.',
+            type: 'success',
+        });
+
         removeItem(key.id);
     }
 
     const setUpdate = (data) => {
+        setOpenAlerts({
+            open: true,
+            msg: 'Updated successfully.',
+            type: 'success',
+        });
+
         // TODO: CALL API
         return updateItem(data);
     }
@@ -116,45 +145,20 @@ function App() {
                                         <Widget style={styles.fadeIn1}/>
                                     </div>
 
-                                    <div style={styles.fadeIn15}>
-                                        <form id="to-do-form" onSubmit={addItem}>
-                                            <Typography className={classes.left2} variant="subtitle1" gutterBottom>
-                                                Añade las tareas que desea realizar
-                                            </Typography>
-
-                                            <TextField
-                                                id="outlined-full-width"
-                                                style={{ margin: 8, background: "#fff" }}
-                                                value={state.currentItem.text}
-                                                onChange={handleInput}
-                                                placeholder="Ej: Comprar materiales para trabajar"
-                                                fullWidth
-                                                margin="normal"
-                                                InputLabelProps={{
-                                                    shrink: true,
-                                                }}
-                                                variant="outlined"
-                                            />
-                                            <Button
-                                                type="submit"
-                                                classes={{
-                                                    root: classes.root,
-                                                    label: classes.label,
-                                                }}
-                                            >
-                                                Añadir Tarea
-                                            </Button>
-                                        </form>
+                                    <div style={styles.fadeIn2}>
+                                        <InputPost classes={classes} state={state} addItem={addItem} handleInput={handleInput} />
                                     </div>
                                 </header>
                                 <br/>
                                 <br/>
-                                <div style={styles.fadeIn2}>
-                                    <List rows={state.items} state={state} setState={setState} deleteItem={deleteItem} setUpdate={setUpdate} reload={reload} />
+                                <div style={styles.fadeIn3}>
+                                    <List rows={state.items} state={state} setState={setState} deleteItem={deleteItem} setUpdate={setUpdate} />
                                 </div>
                             </div>
                         </Grid>
                     </Grid>
+                    {/* alerts */}
+                    <Alerts openAlerts={openAlerts} setOpenAlerts={setOpenAlerts} />
                 </Container>
         </StyleRoot>
     );
@@ -163,15 +167,15 @@ function App() {
 // animations
 const styles = {
     fadeIn1: {
-        animation: 'x 1s',
-        animationName: Radium.keyframes(fadeIn, 'fadeIn')
-    },
-    fadeIn15: {
         animation: 'x 1.5s',
         animationName: Radium.keyframes(fadeIn, 'fadeIn')
     },
     fadeIn2: {
-        animation: 'x 2s',
+        animation: 'x 2.5s',
+        animationName: Radium.keyframes(fadeIn, 'fadeIn')
+    },
+    fadeIn3: {
+        animation: 'x 3s',
         animationName: Radium.keyframes(fadeIn, 'fadeIn')
     }
 };

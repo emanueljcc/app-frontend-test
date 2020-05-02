@@ -1,4 +1,5 @@
 import React from "react";
+import Clock from "react-digital-clock";
 import "./Widget.css";
 
 export default function Widget() {
@@ -10,7 +11,10 @@ export default function Widget() {
                 </div>
                 <div className="card_title title-white">
                     <span className="date">Viernes 1 mayo</span>
-                    <span className="clock">10:45am</span>
+                    <span className="clock">
+                        <Clock format= {'hh-mm'} />
+                    </span>
+
                     <p>¿Que planeas hacer el dia de hoy?</p>
                 </div>
             </div>
