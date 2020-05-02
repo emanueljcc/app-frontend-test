@@ -93,7 +93,10 @@ export default function Modal({ open, setOpen, row, setRow, setUpdate }) {
                             style={{ margin: 8, background: "#fff" }}
                             name="notes"
                             defaultValue={row.notes}
-                            onChange={handleChange}
+                            onChange={e => {
+                                e.persist();
+                                return handleChange(e);
+                            }}
                             placeholder="Ingresar Notas"
                             fullWidth
                             margin="normal"
